@@ -3,7 +3,7 @@ Easy Localization for NodeJS
 
 ## Installation
 ```sh
-npm install jm-ez-l10n
+npm install jm-ez-l10n --save
 ```
 
 ## Configure
@@ -11,12 +11,12 @@ Load language files, in your main server.js/index.js file,
 
 ```js
 var l10n = require('jm-ez-l10n');
+
 // Set Translations by json file
 l10n.setTranslationsFile('en', 'translation.en.json');
 l10n.setTranslationsFile('fr', 'translation.fr.json');
 
 // Or else by pure js object
-
 l10n.setTranslations('en', {
     "HEL" : "Hello!",
     "INF_THANK_YOU" : "Thank you for singup with us!"
@@ -40,7 +40,6 @@ Localization is only needed when you want to localize content based on User's lo
 If you are using core NodeJS, Enable l10n to any damm object!! by just a line...
 
 ```js
-
 // Enable l10n
 var any = {};
 l10n.enableL10N(any, 'en')
