@@ -68,5 +68,46 @@ console.log(l10n.t("MSG_N_ITEM_FOUND", {"num": 10})); // 10 items found!
 console.log(l10n.t("DISPLAY_PAGE_NUMBER", {"current": 10, total: 25})); // Displaying 10 of 25 records
 ```
 
+## End User APIs
+Localization is only needed when you want to localize content based on User's locale.
+
+If you are using Code NodeJS, Enable l10n to any damm object!! by just a line...
+
+```js
+var any = {};
+l10n.enableL10N(any, 'en')
+console.log(any.t('MSG_N_ITEM_FOUND', {num: 10})); // 10 items found!
+console.log(l10n.t("DISPLAY_PAGE_NUMBER", {"current": 10, total: 25})); // Displaying 10 of 25 records
+```
+
+If you are using Express framework, which is worldwide accepted! use below middleware,
+
+```js
+// Express Middleware works beautifully here...
+var express = require('express');
+var app = express();
+
+// Using custom header X-L10N-Locale
+app.use(l10n.enableL10NExpress);
+```
+
+Example:
+
+```curl
+curl -X POST -H "X-L10N-Locale: en" -H "Content-Type: application/json" -d '{"abc":"123"}'  http://localhost:1338/anyReq
+```
+
+## CLI Usage
+If you are using from CLI, no user locale will be there right, so you may use it's global version, 
+
+```js
+// This will set locale globally on server
+l10n.setLocale('en');
+console.log(l10n.t("HEL")); // Hello!
+
+l10n.setLocale('fr');
+console.log(l10n.t("HEL")); // salut!
+```
+
 ## License
 The MIT License (MIT)
