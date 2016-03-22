@@ -32,13 +32,14 @@ l10n.addTranslationsFile = function (locale, file) {
 }
 
 l10n.t = l10n.translate = function (key, obj) {
-    var translation = l10n.translations[l10n.locale][key];
+    var locale = this.locale ? this.locale : l10n.locale;
+    var translation = l10n.translations[locale][key];
     if (translation) {
         _.forEach(obj, function (value, key) {
             translation = translation.replace(new RegExp('{{'+key+'}}', 'g'), value);
         });
     }
-    return translation ? translation : new Error("Translation not found");
+    return translation ? translation : new Error("Translation not found for " + key);
 }
 
 var getTranslationsFromFile = function (file) {
@@ -54,4 +55,18 @@ var getTranslationsFromFile = function (file) {
     }
 }
 
+l10n.enableL10N = function(anyObject, locale){
+    anyObject.t = l10n.t;
+    anyObject.locale = locale;
+}
+
+l10n.enableL10NExpress = function(request, response, next){
+    var locale = l10n.locale;
+    if(request.headers['x-l10n-locale']){
+        locale = request.headers['x-l10n-locale'];
+    }
+    l10n.enableL10N(request, locale);
+    next();
+}
 module.exports = l10n;
+

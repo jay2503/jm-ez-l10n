@@ -1,6 +1,6 @@
 {
   "name": "jm-ez-l10n",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "Easy Localization for NodeJS",
   "main": "index.js",
   "scripts": {

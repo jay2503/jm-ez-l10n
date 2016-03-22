@@ -76,6 +76,7 @@ app.post('/anyReq', function(req, res) {
 
 // cURL - fr
 // curl -X POST -H "X-L10N-Locale: fr" -H "Content-Type: application/json" -d '{"abc":"123"}'  http://localhost:1338/anyReq
+
 app.post('/anyReq', function(req, res) {
   console.log(req.t('HEL')) // salut!
 });
