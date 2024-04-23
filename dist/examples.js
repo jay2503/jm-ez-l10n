@@ -7,34 +7,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("./index"); // Assuming index.ts exists
 // Express Middleware works beautifully here...
 const express_1 = __importDefault(require("express"));
-const l10n = new index_1.L10n();
 // Set Translations by pure js object
-l10n.setTranslations("en", {
+index_1.l10n.setTranslations("en", {
     HEL: "Hello!",
     INF_THANK_YOU: "Thank you for signup with us!",
 });
-l10n.setTranslations("fr", {
+index_1.l10n.setTranslations("fr", {
     HEL: "salut!",
     INF_THANK_YOU: "Nous vous remercions de signup avec nous!",
 });
 // Set Translations by json file
-l10n.setTranslationsFile("en", "translation.en.json");
-l10n.setTranslationsFile("fr", "translation.fr.json");
+index_1.l10n.setTranslationsFile("en", "translation.en.json");
+index_1.l10n.setTranslationsFile("fr", "translation.fr.json");
 // Variables and add translation to existing
-l10n.addTranslations("en", {
+index_1.l10n.addTranslations("en", {
     MSG_N_ITEM_FOUND: "{{num}} items found!",
     DISPLAY_PAGE_NUMBER: "Displaying {{current}} of {{total}} records",
 });
 const anyObj = {}; // Renamed variable "any" to "anyObj" to avoid conflict with TypeScript keyword
-l10n.enableL10N(anyObj, "en");
+index_1.l10n.enableL10N(anyObj, "en");
 console.log(anyObj.t("MSG_N_ITEM_FOUND", { num: 10 })); // 10 items found!
-console.log(l10n.t("DISPLAY_PAGE_NUMBER", { current: "10", total: "25" })); // Displaying 10 of 25 records
+console.log(index_1.l10n.t("DISPLAY_PAGE_NUMBER", { current: "10", total: "25" })); // Displaying 10 of 25 records
 const app = (0, express_1.default)();
 app.listen(1338, function () {
     console.log("parse-server-example running on port 1338");
 });
 // Using custom header X-L10N-Locale
-app.use(l10n.enableL10NExpress);
+app.use(index_1.l10n.enableL10NExpress);
 app.post("/anyReq", function (req, res) {
     console.log(req.t("MSG_N_ITEM_FOUND", { num: 10 })); // 10 items found!
 });

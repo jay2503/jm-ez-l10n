@@ -1,49 +1,45 @@
-import _ from "lodash";
-import fs from "fs";
+import * as fs from "fs";
+import * as _ from "lodash";
 
-interface Translations {
-  [locale: string]: { [key: string]: string };
-}
+export const l10n: any = {
+  locale: "en",
+  translations: { en: {} },
 
-export class L10n {
-  locale: string;
-  translations: Translations;
+  setLocale: function (locale: string) {
+    l10n.locale = locale;
+    l10n.translations[locale] = l10n.translations[locale] ?? {};
+  },
 
-  constructor() {
-    this.locale = "en";
-    this.translations = { en: {} };
-    this.enableL10NExpress = this.enableL10NExpress.bind(this);
-  }
+  setTranslations: function (
+    locale: string,
+    translations: { [key: string]: string }
+  ) {
+    l10n.translations[locale] = translations;
+  },
 
-  setLocale(locale: string) {
-    this.locale = locale;
-    this.translations[locale] = this.translations[locale] ?? {};
-  }
-
-  setTranslations(locale: string, translations: { [key: string]: string }) {
-    this.translations[locale] = translations;
-  }
-
-  addTranslations(locale: string, translations: { [key: string]: string }) {
-    this.translations[locale] = _.merge(
-      this.translations[locale],
+  addTranslations: function (
+    locale: string,
+    translations: { [key: string]: string }
+  ) {
+    l10n.translations[locale] = _.merge(
+      l10n.translations[locale],
       translations
     );
-  }
+  },
 
-  setTranslationsFile(locale: string, file: string) {
-    const translations = this.getTranslationsFromFile(file);
-    this.setTranslations(locale, translations);
-  }
+  setTranslationsFile: function (locale: string, file: string) {
+    const translations = l10n.getTranslationsFromFile(file);
+    l10n.setTranslations(locale, translations);
+  },
 
-  addTranslationsFile(locale: string, file: string) {
-    const translations = this.getTranslationsFromFile(file);
-    this.addTranslations(locale, translations);
-  }
+  addTranslationsFile: function (locale: string, file: string) {
+    const translations = l10n.getTranslationsFromFile(file);
+    l10n.addTranslations(locale, translations);
+  },
 
-  t(key: string, obj?: { [key: string]: string }) {
-    const locale = this.locale;
-    let translation = this.translations[locale][key];
+  t: function (key: string, obj?: { [key: string]: string }) {
+    const locale = l10n.locale;
+    let translation = l10n.translations[locale][key];
     if (translation) {
       _.forEach(obj, (value, key) => {
         translation = translation.replace(
@@ -53,9 +49,9 @@ export class L10n {
       });
     }
     return translation ?? new Error("Translation not found for " + key);
-  }
+  },
 
-  private getTranslationsFromFile(file: string): { [key: string]: string } {
+  getTranslationsFromFile: function (file: string): { [key: string]: string } {
     let translations: { [key: string]: string } = {};
     try {
       translations = JSON.parse(fs.readFileSync(file, "utf8"));
@@ -71,19 +67,19 @@ export class L10n {
       );
     }
     return translations;
-  }
+  },
 
-  enableL10N(anyObject: { [key: string]: any }, locale: string) {
-    anyObject.t = this.t.bind(this);
+  enableL10N: function (anyObject: { [key: string]: any }, locale: string) {
+    anyObject.t = l10n.t.bind(l10n);
     anyObject.locale = locale;
-  }
+  },
 
-  enableL10NExpress(request: any, response: any, next: () => void) {
-    let locale = this.locale;
+  enableL10NExpress: function (request: any, response: any, next: () => void) {
+    let locale = l10n.locale;
     if (request.headers["x-l10n-locale"]) {
       locale = request.headers["x-l10n-locale"];
     }
-    this.enableL10N(request, locale);
+    l10n.enableL10N(request, locale);
     next();
-  }
-}
+  },
+};

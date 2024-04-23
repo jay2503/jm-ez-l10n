@@ -1,9 +1,7 @@
 // index.ts / server.ts
-import { L10n } from "./index"; // Assuming index.ts exists
+import { l10n } from "./index"; // Assuming index.ts exists
 // Express Middleware works beautifully here...
 import express from "express";
-
-const l10n = new L10n();
 
 // Set Translations by pure js object
 l10n.setTranslations("en", {
