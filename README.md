@@ -9,8 +9,8 @@ npm install jm-ez-l10n --save
 ## Configure
 Load language files, in your main server.js/index.js file,
 
-```js
-var l10n = require('jm-ez-l10n');
+```ts
+import { l10n } from "jm-ez-l10n";
 
 // Set Translations by json file
 l10n.setTranslationsFile('en', 'translation.en.json');
